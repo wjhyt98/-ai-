@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>从"全能学伴"到"能力焦虑" · 当代大学生AI使用的冰与火</title>
+<style>
+  :root {
+    --bg: #F7F6F3;
+    --surface: #FFFFFF;
+    --surface-2: #EFEDE8;
+    --text: #262626;
+    --muted: #6B6B6B;
+    --line: #DEDAD3;
+    --ice: #1F6F8B;
+    --ice-soft: #E4F0F5;
+    --fire: #C0392B;
+    --fire-soft: #F7E6E2;
+    --gold: #B7791F;
+    --green: #2E7D5B;
+    --radius: 14px;
+    --shadow: 0 2px 12px rgba(38,38,38,.06);
+    --maxw: 680px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    line-height: 1.75; -webkit-font-smoothing: antialiased;
+  }
+  .progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: linear-gradient(90deg, var(--ice), var(--fire)); z-index: 99; transition: width .1s linear; }
+  .topbar { position: sticky; top: 0; z-index: 90; background: rgba(247,246,243,.94); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  .topbar-inner { max-width: var(--maxw); margin: 0 auto; padding: 9px 18px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .brand { font-size: 12px; font-weight: 700; color: var(--fire); }
+  .brand .t { color: var(--muted); font-weight: 400; margin-left: 6px; }
+  .topbar button { border: 1px solid var(--ice); background: transparent; color: var(--ice); font-size: 12px; padding: 5px 10px; border-radius: 999px; cursor: pointer; white-space: nowrap; }
+  .topbar button:active { background: var(--ice-soft); }
+  main { max-width: var(--maxw); margin: 0 auto; padding: 0 18px 80px; }
+  section { padding: 44px 0 8px; scroll-margin-top: 58px; }
+  .hero { text-align: center; padding-top: 34px; }
+  .kicker { display: inline-block; font-size: 11px; color: var(--ice); background: var(--ice-soft); padding: 4px 10px; border-radius: 999px; margin-bottom: 14px; }
+  h1 { font-size: 28px; line-height: 1.4; margin: 0 0 12px; font-weight: 800; letter-spacing: -.02em; }
+  h1 .ice { color: var(--ice); } h1 .fire { color: var(--fire); }
+  .subtitle { color: var(--muted); font-size: 14px; margin: 0 auto; max-width: 34em; }
+  .bigstat { margin: 26px auto 6px; }
+  .bigstat b { font-size: 58px; line-height: 1; font-weight: 800; color: var(--ice); font-variant-numeric: tabular-nums; }
+  .bigstat span { display: block; font-size: 13px; color: var(--muted); margin-top: 8px; }
+  .duo { display: flex; gap: 12px; margin: 24px 0 16px; }
+  .duo > div { flex: 1; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 10px; box-shadow: var(--shadow); }
+  .duo b { display: block; font-size: 26px; font-weight: 800; line-height: 1.1; }
+  .duo .a b { color: var(--ice); } .duo .b b { color: var(--fire); }
+  .duo span { display: block; font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .quote { background: var(--surface); border-left: 4px solid var(--fire); border-radius: 0 10px 10px 0; padding: 16px 18px; margin: 22px 0 8px; text-align: left; box-shadow: var(--shadow); }
+  .quote p { margin: 0; font-size: 17px; font-weight: 700; line-height: 1.6; }
+  .quote small { color: var(--muted); font-size: 12px; }
+  .hero-art { margin: 18px auto 0; max-width: 320px; }
+  .scroll-cue { margin-top: 18px; font-size: 12px; color: var(--muted); }
+  .scroll-cue::after { content: ""; display: block; width: 1px; height: 24px; background: var(--line); margin: 7px auto 0; }
+  h2 { font-size: 21px; margin: 0 0 6px; font-weight: 800; line-height: 1.4; }
+  h2 .num { display: block; font-size: 12px; color: var(--fire); letter-spacing: .08em; margin-bottom: 4px; font-weight: 700; }
+  h2 .num.ice { color: var(--ice); }
+  .lead { color: var(--muted); font-size: 14px; margin: 0 0 18px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); margin-bottom: 14px; }
+  .card-title { font-size: 15px; font-weight: 700; margin: 0 0 4px; }
+  .card-sub { font-size: 12px; color: var(--muted); margin: 0 0 14px; }
+  .note { font-size: 11px; color: var(--muted); margin-top: 12px; }
+  .tabs { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+  .tab { border: 1px solid var(--line); background: var(--bg); color: var(--muted); font-size: 12px; padding: 6px 12px; border-radius: 999px; cursor: pointer; }
+  .tab.active { background: var(--ice); border-color: var(--ice); color: #fff; }
+  .bar-row { margin-bottom: 12px; cursor: pointer; }
+  .bar-label { display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; margin-bottom: 5px; gap: 10px; }
+  .bar-label b { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .bar-track { height: 10px; background: var(--surface-2); border-radius: 999px; overflow: hidden; }
+  .bar-fill { height: 100%; width: 0; border-radius: 999px; transition: width .9s cubic-bezier(.2,.8,.2,1); }
+  .contrast { display: flex; flex-direction: column; gap: 12px; }
+  .cbox { border-radius: 12px; padding: 14px 16px; }
+  .cbox.ice { background: var(--ice-soft); } .cbox.fire { background: var(--fire-soft); }
+  .cbox h4 { margin: 0 0 10px; font-size: 14px; }
+  .cbox.ice h4 { color: var(--ice); } .cbox.fire h4 { color: var(--fire); }
+  .cbox .mini { display: flex; justify-content: space-between; font-size: 13px; padding: 4px 0; border-bottom: 1px dashed rgba(0,0,0,.08); }
+  .cbox .mini:last-child { border-bottom: 0; }
+  .cbox .mini b { font-variant-numeric: tabular-nums; }
+  .ladder { display: flex; flex-direction: column; gap: 8px; }
+  .rung { display: flex; align-items: center; gap: 12px; padding: 11px 14px; border-radius: 10px; color: #fff; }
+  .rung .lv { font-size: 11px; opacity: .85; width: 30px; flex-shrink: 0; }
+  .rung .txt { flex: 1; font-size: 13px; font-weight: 600; }
+  .rung .pct { font-size: 16px; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .redline { border-left: 3px solid var(--fire); background: var(--fire-soft); padding: 13px 15px; border-radius: 0 8px 8px 0; font-size: 14px; margin-top: 14px; }
+  .poll-opt { border: 1px solid var(--line); border-radius: 10px; padding: 11px 13px; margin-bottom: 9px; cursor: pointer; font-size: 14px; background: var(--surface); }
+  .poll-opt:hover { border-color: var(--ice); }
+  .poll-opt.sel { border-color: var(--fire); background: var(--fire-soft); color: var(--fire); font-weight: 700; }
+  .poll-res { margin-top: 12px; display: none; }
+  .poll-res.show { display: block; }
+  .poll-bar { margin-bottom: 10px; }
+  .poll-bar .pl { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; }
+  .poll-bar .pt { height: 8px; background: var(--surface-2); border-radius: 999px; overflow: hidden; }
+  .poll-bar .pf { height: 100%; width: 0; background: var(--ice); border-radius: 999px; transition: width .7s ease; }
+  .quiz-q { font-size: 14px; font-weight: 700; margin: 0 0 10px; }
+  .opts { display: grid; gap: 8px; }
+  .opt { border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 10px 12px; font-size: 13px; cursor: pointer; text-align: left; color: var(--text); }
+  .opt:hover { border-color: var(--ice); }
+  .opt.sel { border-color: var(--fire); background: var(--fire-soft); color: var(--fire); font-weight: 700; }
+  .foot-row { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; gap: 10px; }
+  .btn { border: 0; background: var(--fire); color: #fff; font-size: 14px; font-weight: 700; padding: 10px 18px; border-radius: 999px; cursor: pointer; }
+  .btn:disabled { opacity: .4; cursor: not-allowed; }
+  .btn.ghost { background: transparent; color: var(--fire); border: 1px solid var(--fire); }
+  .btn.ice { background: var(--ice); }
+  .result { display: none; margin-top: 16px; padding: 16px; border-radius: 12px; background: var(--ice-soft); }
+  .result.show { display: block; }
+  .result b { font-size: 19px; color: var(--ice); }
+  .result p { font-size: 13px; margin: 8px 0 0; }
+  .timeline { position: relative; padding-left: 22px; }
+  .timeline::before { content: ""; position: absolute; left: 5px; top: 4px; bottom: 4px; width: 2px; background: var(--line); }
+  .timeline-item { position: relative; margin-bottom: 14px; opacity: 0; transform: translateY(12px); transition: .5s ease; }
+  .timeline-item.visible { opacity: 1; transform: none; }
+  .timeline-item::before { content: ""; position: absolute; left: -21px; top: 6px; width: 10px; height: 10px; border-radius: 50%; background: var(--ice); border: 2px solid var(--bg); }
+  .timeline-year { font-size: 12px; font-weight: 800; color: var(--ice); }
+  .timeline-txt { font-size: 13px; color: var(--muted); }
+  footer { border-top: 1px solid var(--line); margin-top: 44px; padding-top: 18px; font-size: 12px; color: var(--muted); }
+  footer b { color: var(--text); }
+  .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 18px); background: var(--text); color: #fff; font-size: 13px; padding: 10px 16px; border-radius: 999px; opacity: 0; pointer-events: none; transition: .25s; z-index: 120; max-width: 90%; text-align: center; }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+  .reveal { opacity: 0; transform: translateY(16px); transition: .6s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+  @media (max-width: 420px) { h1 { font-size: 24px; } .bigstat b { font-size: 50px; } }
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">冰与火 · 大学生AI使用图谱<span class="t">约3分30秒</span></div>
+    <button id="audioBtn" type="button">语音播报</button>
+  </div>
+</div>
+
+<main>
+  <section class="hero">
+    <span class="kicker">数据新闻 · 融合新闻课程作业</span>
+    <h1>从"<span class="ice">全能学伴</span>"到"<span class="fire">能力焦虑</span>"</h1>
+    <p class="subtitle">当代大学生 AI 使用的冰与火——效率红利之下，自主思考正在退场吗？</p>
+    <div class="bigstat"><b id="cnt9855">0%</b><span>受访大学生在学习中使用过 AI 工具</span></div>
+    <div class="duo">
+      <div class="a"><b>47.09%</b><span>几乎每天使用<br>冰山之上 · 全能学伴</span></div>
+      <div class="b"><b>49.03%</b><span>承认习惯性依赖<br>冰山之下 · 能力焦虑</span></div>
+    </div>
+    <div class="quote">
+      <p>"离开 AI，你还能独立完成期末论文吗？"</p>
+      <small>数据来源：中国青年报·中青校媒（2026.07，N=1032）</small>
+    </div>
+    <div class="hero-art">
+      <svg viewBox="0 0 320 150" role="img" aria-label="冰与火意象插画">
+        <g fill="#1F6F8B" opacity=".85"><path d="M60 120 L44 88 L58 92 L50 58 L74 90 L66 88 L80 120 Z"/></g>
+        <g fill="#C0392B" opacity=".85"><path d="M260 120 C244 108 250 92 258 82 C258 94 266 88 264 74 C278 88 280 106 268 120 Z"/></g>
+        <g fill="none" stroke="#6B6B6B" stroke-width="1.2"><path d="M100 76 C130 56 190 56 220 76"/><path d="M100 96 C130 116 190 116 220 96"/></g>
+        <text x="160" y="84" text-anchor="middle" font-size="15" font-weight="700" fill="#262626">AI</text>
+        <text x="96" y="140" text-anchor="middle" font-size="11" fill="#1F6F8B">效率</text>
+        <text x="226" y="140" text-anchor="middle" font-size="11" fill="#C0392B">依赖</text>
+      </svg>
+    </div>
+    <div class="scroll-cue">向下滚动，展开冰山全貌</div>
+  </section>
+
+  <section id="sec1">
+    <h2><span class="num ice">01 / 30秒</span>悬念导入</h2>
+    <p class="lead">2026 年，生成式 AI 已从"新鲜工具"变为校园基础设施。全国生成式 AI 用户超 7 亿、普及率突破 50%（CNNIC），而大学生群体的渗透率更高。</p>
+    <div class="card reveal">
+      <p class="card-title">三组数字，看见"冰与火"</p>
+      <div class="duo" style="margin-top:10px">
+        <div class="a"><b>98.55%</b><span>学习中使用过 AI<br>中青校媒 2026.07</span></div>
+        <div class="b"><b>57.07%</b><span>遭遇过 AI 答案错误误导<br>中青校媒 2026.07</span></div>
+      </div>
+      <p class="note">同一群体，一边是近乎全覆盖的使用率，一边是过半的误导遭遇——反差正是本作品的叙事起点。</p>
+    </div>
+  </section>
+
+  <section id="sec2">
+    <h2><span class="num ice">02 / 60秒</span>冰山之上：全能学伴</h2>
+    <p class="lead">AI 延伸到写作业、课程学习的各个角落，成为名副其实的"全能学伴"。</p>
+    <div class="card reveal">
+      <p class="card-title">高频学习场景使用率</p>
+      <p class="card-sub">点击条目查看解读 · 数据来源：中青校媒 2026.07（N=1032）</p>
+      <div class="tabs">
+        <div class="tab active" data-set="scene">学习场景</div>
+        <div class="tab" data-set="course">课程与教学</div>
+      </div>
+      <div id="bars"></div>
+      <p class="note" id="barNote">数据为多选项，占比之和可能超过 100%。</p>
+    </div>
+    <div class="timeline" style="margin-top:8px">
+      <div class="timeline-item"><div class="timeline-year">场景 · 理工科学生实录</div><div class="timeline-txt">"用 AI 整理文献摘要，再把关键结论自己复述一遍，效率确实高了。"</div></div>
+      <div class="timeline-item"><div class="timeline-year">场景 · 课程学习</div><div class="timeline-txt">62.02% 的受访学生将 AI 用于课程学习，AI 正嵌入日常学习流程。</div></div>
+    </div>
+  </section>
+
+  <section id="sec3">
+    <h2><span class="num">03 / 70秒</span>冰山之下：依赖与红线</h2>
+    <p class="lead">效率红利另一面，是误导、依赖与能力退化的集体焦虑。</p>
+    <div class="contrast reveal">
+      <div class="cbox ice">
+        <h4>冰山之上 · 效率红利</h4>
+        <div class="mini"><span>辅助写作业</span><b>65.41%</b></div>
+        <div class="mini"><span>课程学习</span><b>62.02%</b></div>
+        <div class="mini"><span>整理素材后自主创作</span><b>36.43%</b></div>
+      </div>
+      <div class="cbox fire">
+        <h4>冰山之下 · 认知代价</h4>
+        <div class="mini"><span>遇过 AI 答案错误误导</span><b>57.07%</b></div>
+        <div class="mini"><span>承认习惯性依赖 AI</span><b>49.03%</b></div>
+        <div class="mini"><span>感叹核心能力退化</span><b>44.09%</b></div>
+      </div>
+    </div>
+    <div class="card reveal" style="margin-top:14px">
+      <p class="card-title">"人机协作红线" · 五级使用边界</p>
+      <p class="card-sub">从"仅作参考"到"全文照搬"，越往下学术风险越高</p>
+      <div class="ladder" id="ladder"></div>
+      <p class="note">数据来源：中青校媒 2026.07（N=1032）。颜色由绿到红表示学术合规风险递增。</p>
+    </div>
+    <div class="card reveal">
+      <p class="card-title">学术诚信：四成学生亲历纠纷</p>
+      <div id="riskBars"></div>
+      <p class="note">数据来源：麦可思研究院《2025 高校师生 AI 应用研究》（学生 N=2971，教师 N=1073）。</p>
+    </div>
+    <div class="redline reveal">
+      <strong>红线提示：</strong>85.5% 大学生担忧 AI 引发学术不端，42.0% 亲历过抄袭判定或作业扣分纠纷；83.24% 呼吁高校制定明确规范。
+    </div>
+  </section>
+
+  <section id="sec4">
+    <h2><span class="num ice">04 / 50秒</span>破局与互动：人机共生</h2>
+    <p class="lead">焦虑并非无解。高校课堂正加速"AI+专业"教学改革，把工具引向能力培养。</p>
+    <div class="card reveal">
+      <p class="card-title">课堂演进与期待</p>
+      <div id="eduBars"></div>
+      <p class="note">数据来源：中青校媒 2026.11.20（N=4763）。另有近八成学生曾将 AI 作为闲聊对象，26.0% 情绪低落时向 AI 寻求安慰。</p>
+    </div>
+
+    <div class="card reveal">
+      <p class="card-title">互动① 测测你的 AI 依赖指数</p>
+      <p class="card-sub">3 题轻量化自测，看看你处在"协作"还是"依赖"区间</p>
+      <div id="quiz"></div>
+      <div class="foot-row">
+        <button class="btn ghost" id="resetQuiz" type="button" style="display:none">重新测试</button>
+        <button class="btn ice" id="submitQuiz" type="button" disabled>查看结果</button>
+      </div>
+      <div class="result" id="result"></div>
+    </div>
+
+    <div class="card reveal">
+      <p class="card-title">互动② 观点投票墙</p>
+      <p class="card-sub">你是否支持高校启用 AI 查重检测？</p>
+      <div id="poll"></div>
+      <div class="poll-res" id="pollRes"></div>
+      <p class="note">提交后显示你的选择与样本分布对比（本地模拟投票，不代表实时全国数据）。</p>
+    </div>
+  </section>
+
+  <footer>
+    <p><b>作品主题：</b>从"全能学伴"到"能力焦虑"：当代大学生 AI 使用的冰与火</p>
+    <p><b>数据来源：</b>中国青年报·中青校媒（2026.07，N=1032；2026.11.20，N=4763）、麦可思研究院《2025 高校师生 AI 应用研究》（学生 N=2971 / 教师 N=1073）、CNNIC《生成式人工智能应用发展报告（2026）》、中青校媒×Soul App（2025.09）。</p>
+    <p><b>融合新闻元素（3 种）：</b>① 动态交互式数据图表 ② "人机协作红线"对比信息图 ③ 读者互动自测与观点投票。</p>
+    <p><b>制作说明：</b>融合新闻课程作业 · 预计阅读时长约 3 分 30 秒 · 提交时间 2026 年 11 月 23 日前。</p>
+  </footer>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+  'use strict';
+  var toastTimer;
+  function toast(msg) {
+    var el = document.getElementById('toast');
+    el.textContent = msg; el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { el.classList.remove('show'); }, 2200);
+  }
+
+  var progress = document.getElementById('progress');
+  window.addEventListener('scroll', function () {
+    var h = document.documentElement;
+    var pct = h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight) * 100;
+    progress.style.width = Math.max(0, Math.min(100, pct)) + '%';
+  }, { passive: true });
+
+  var ro = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal, .timeline-item').forEach(function (el) { ro.observe(el); });
+
+  var cnt = document.getElementById('cnt9855');
+  var start = null;
+  function countUp(ts) {
+    if (!start) start = ts;
+    var p = Math.min(1, (ts - start) / 1400);
+    cnt.textContent = (98.55 * p).toFixed(2) + '%';
+    if (p < 1) requestAnimationFrame(countUp);
+  }
+  requestAnimationFrame(countUp);
+
+  var sets = {
+    scene: {
+      note: '数据为多选项，占比之和可能超过 100%。来源：中青校媒 2026.07。',
+      items: [
+        { n: '辅助写作业', v: 65.41, c: '#1F6F8B', d: '作业场景是 AI 使用最集中的地方。' },
+        { n: '课程学习', v: 62.02, c: '#1F6F8B', d: 'AI 正嵌入日常课程学习流程。' },
+        { n: '整理素材后自主创作', v: 36.43, c: '#2E7D5B', d: '这属于较健康的"工具化"使用方式。' },
+        { n: '仅作思路参考', v: 25.48, c: '#2E7D5B', d: '把 AI 当参谋，而非代笔。' }
+      ]
+    },
+    course: {
+      note: '来源：中青校媒 2026.11.20（N=4763）。',
+      items: [
+        { n: '期待零基础与进阶分层教学', v: 55.55, c: '#1F6F8B', d: '学生希望教学能分层、循序渐进。' },
+        { n: '最看好专业融合课', v: 58.39, c: '#2E7D5B', d: '"AI+专业"是最被看好的课程形态。' },
+        { n: '修读过 AI 通识课', v: 39.16, c: '#B7791F', d: '通识课覆盖面仍有提升空间。' },
+        { n: '修读过专业嵌入课', v: 28.89, c: '#B7791F', d: '专业嵌入课比例相对更低。' }
+      ]
+    }
+  };
+  var barsBox = document.getElementById('bars');
+  var barNote = document.getElementById('barNote');
+  function renderBars(key) {
+    barsBox.innerHTML = '';
+    sets[key].items.forEach(function (d) {
+      var row = document.createElement('div');
+      row.className = 'bar-row';
+      row.innerHTML = '<div class="bar-label"><span>' + d.n + '</span><b>' + d.v + '%</b></div>' +
+        '<div class="bar-track"><div class="bar-fill" style="background:' + d.c + '" data-w="' + d.v + '"></div></div>';
+      row.addEventListener('click', function () { toast(d.n + '：' + d.d); });
+      barsBox.appendChild(row);
+    });
+    barNote.textContent = sets[key].note;
+    setTimeout(function () {
+      barsBox.querySelectorAll('.bar-fill').forEach(function (b) { b.style.width = b.getAttribute('data-w') + '%'; });
+    }, 60);
+  }
+  renderBars('scene');
+  document.querySelectorAll('.tab').forEach(function (t) {
+    t.addEventListener('click', function () {
+      document.querySelectorAll('.tab').forEach(function (x) { x.classList.remove('active'); });
+      t.classList.add('active');
+      renderBars(t.getAttribute('data-set'));
+    });
+  });
+
+  var ladderData = [
+    { lv: 'L1', t: '仅作思路参考', v: 25.48, c: '#2E7D5B' },
+    { lv: 'L2', t: '整理素材后自主创作', v: 36.43, c: '#639922' },
+    { lv: 'L3', t: '小幅修改即用', v: 9.59, c: '#B7791F' },
+    { lv: 'L4', t: '几乎全文照搬', v: 1.74, c: '#C0392B' }
+  ];
+  var ladderBox = document.getElementById('ladder');
+  ladderData.forEach(function (d) {
+    var el = document.createElement('div');
+    el.className = 'rung';
+    el.style.background = d.c;
+    el.innerHTML = '<span class="lv">' + d.lv + '</span><span class="txt">' + d.t + '</span><span class="pct">' + d.v + '%</span>';
+    ladderBox.appendChild(el);
+  });
+
+  function simpleBars(id, data) {
+    var box = document.getElementById(id);
+    data.forEach(function (d) {
+      var row = document.createElement('div');
+      row.className = 'bar-row';
+      row.innerHTML = '<div class="bar-label"><span>' + d.n + '</span><b>' + d.v + '%</b></div>' +
+        '<div class="bar-track"><div class="bar-fill" style="background:' + d.c + '" data-w="' + d.v + '"></div></div>';
+      box.appendChild(row);
+    });
+    setTimeout(function () {
+      box.querySelectorAll('.bar-fill').forEach(function (b, i) {
+        setTimeout(function () { b.style.width = b.getAttribute('data-w') + '%'; }, i * 100);
+      });
+    }, 250);
+  }
+  simpleBars('riskBars', [
+    { n: '担忧 AI 引发学术不端', v: 85.5, c: '#C0392B' },
+    { n: '面临 AI 学术争议风险', v: 65.9, c: '#B7791F' },
+    { n: '亲历抄袭判定或扣分纠纷', v: 42.0, c: '#C0392B' },
+    { n: '呼吁高校制定明确规范', v: 83.24, c: '#1F6F8B' }
+  ]);
+  simpleBars('eduBars', [
+    { n: '修读过 AI 通识课', v: 39.16, c: '#1F6F8B' },
+    { n: '修读过专业嵌入课', v: 28.89, c: '#1F6F8B' },
+    { n: '期待分层教学', v: 55.55, c: '#2E7D5B' },
+    { n: '看好专业融合课', v: 58.39, c: '#2E7D5B' }
+  ]);
+
+  var questions = [
+    { q: '你使用 AI 完成任务的频率是？', opts: [['偶尔使用',0],['每周几次',1],['几乎每天',2]] },
+    { q: '看到 AI 给出的答案，你通常会？', opts: [['核对来源再判断',0],['大致看一眼就用',1],['基本照搬',2]] },
+    { q: '提交作业时，你会标注 AI 使用情况吗？', opts: [['一定会',0],['看老师要求',1],['从来不标',2]] }
+  ];
+  var answers = new Array(questions.length).fill(null);
+  var quizBox = document.getElementById('quiz');
+  var submit = document.getElementById('submitQuiz');
+  var reset = document.getElementById('resetQuiz');
+  var result = document.getElementById('result');
+  function renderQuiz() {
+    quizBox.innerHTML = '';
+    questions.forEach(function (item, qi) {
+      var wrap = document.createElement('div'); wrap.style.marginBottom = '16px';
+      var title = document.createElement('p'); title.className = 'quiz-q'; title.textContent = (qi + 1) + '. ' + item.q;
+      wrap.appendChild(title);
+      var opts = document.createElement('div'); opts.className = 'opts';
+      item.opts.forEach(function (opt, oi) {
+        var b = document.createElement('button'); b.type = 'button';
+        b.className = 'opt' + (answers[qi] === oi ? ' sel' : '');
+        b.textContent = opt[0];
+        b.addEventListener('click', function () { answers[qi] = oi; renderQuiz(); });
+        opts.appendChild(b);
+      });
+      wrap.appendChild(opts); quizBox.appendChild(wrap);
+    });
+    submit.disabled = answers.some(function (a) { return a === null; });
+  }
+  renderQuiz();
+  submit.addEventListener('click', function () {
+    var score = answers.reduce(function (s, a, i) { return s + questions[i].opts[a][1]; }, 0);
+    var level, desc, color;
+    if (score <= 2) { level = '健康协作型'; desc = '你把 AI 当工具而非替代品，保留独立判断。对应样本中"仅作思路参考/整理素材后自主创作"的多数做法。'; color = '#2E7D5B'; }
+    else if (score <= 4) { level = '轻度依赖型'; desc = 'AI 已进入你的常规流程。建议为关键任务保留"无 AI 时间"，并主动标注使用情况。'; color = '#B7791F'; }
+    else { level = '高度依赖型'; desc = '你可能在多个环节依赖 AI。试着先独立完成初稿，再让 AI 提供反馈，而不是直接生成答案。'; color = '#C0392B'; }
+    result.innerHTML = '<b style="color:' + color + '">' + level + ' · ' + score + ' / 6</b><p>' + desc + '</p>';
+    result.classList.add('show'); submit.style.display = 'none'; reset.style.display = 'inline-block';
+  });
+  reset.addEventListener('click', function () {
+    answers = new Array(questions.length).fill(null);
+    result.classList.remove('show'); submit.style.display = 'inline-block'; reset.style.display = 'none'; renderQuiz();
+  });
+
+  var pollOpts = [
+    { t: '支持，应启用并明确规范', base: 43.4 },
+    { t: '支持，但需防止误判、平衡权益', base: 24.3 },
+    { t: '不支持，担忧误判与隐私', base: 32.3 }
+  ];
+  var pollBox = document.getElementById('poll');
+  var pollRes = document.getElementById('pollRes');
+  var chosen = null;
+  pollOpts.forEach(function (o, i) {
+    var b = document.createElement('div'); b.className = 'poll-opt'; b.textContent = o.t;
+    b.addEventListener('click', function () { chosen = i; renderPoll(); toast('已选择：' + o.t); });
+    pollBox.appendChild(b);
+  });
+  function renderPoll() {
+    pollBox.querySelectorAll('.poll-opt').forEach(function (b, i) { b.classList.toggle('sel', chosen === i); });
+    if (chosen === null) return;
+    pollRes.innerHTML = '';
+    pollOpts.forEach(function (o, i) {
+      var pct = o.base;
+      var row = document.createElement('div'); row.className = 'poll-bar';
+      row.innerHTML = '<div class="pl"><span>' + o.t + (i === chosen ? ' ← 你的选择' : '') + '</span><b>' + pct + '%</b></div>' +
+        '<div class="pt"><div class="pf" data-w="' + pct + '" style="background:' + (i === chosen ? '#C0392B' : '#1F6F8B') + '"></div></div>';
+      pollRes.appendChild(row);
+    });
+    pollRes.classList.add('show');
+    setTimeout(function () {
+      pollRes.querySelectorAll('.pf').forEach(function (f) { f.style.width = f.getAttribute('data-w') + '%'; });
+    }, 50);
+  }
+
+  var audioBtn = document.getElementById('audioBtn');
+  var speaking = false;
+  audioBtn.addEventListener('click', function () {
+    if (!('speechSynthesis' in window)) { toast('当前浏览器不支持语音播报'); return; }
+    if (speaking) { window.speechSynthesis.cancel(); speaking = false; audioBtn.textContent = '语音播报'; return; }
+    var text = '从全能学伴到能力焦虑，当代大学生AI使用的冰与火。98.55%的受访大学生在学习中使用过AI，47.09%几乎每天使用；但57.07%遭遇过答案误导，49.03%承认习惯性依赖。85.5%担忧学术不端，42%亲历过学术纠纷。数据来源为中青校媒与麦可思研究院。';
+    var u = new SpeechSynthesisUtterance(text);
+    u.lang = 'zh-CN'; u.rate = 1; u.pitch = 1;
+    u.onend = function () { speaking = false; audioBtn.textContent = '语音播报'; };
+    u.onerror = function () { speaking = false; audioBtn.textContent = '语音播报'; toast('语音播报失败，请检查浏览器设置'); };
+    window.speechSynthesis.cancel(); window.speechSynthesis.speak(u);
+    speaking = true; audioBtn.textContent = '停止播报';
+  });
+})();
+</script>
+</body>
+</html>
